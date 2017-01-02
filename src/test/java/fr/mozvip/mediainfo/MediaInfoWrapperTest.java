@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Locale;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -26,6 +27,12 @@ public class MediaInfoWrapperTest {
 			System.out.println( locale );
 		}
 		
+	}
+	
+	@Test
+	public void testLanguageToLocale() {
+		Locale japanese = wrapper.getLocaleForLanguage("jap");
+		Assert.assertNotNull( japanese );
 	}
 
 }

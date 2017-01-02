@@ -57,6 +57,17 @@ public class MediaInfoWrapper {
 				languageToLocaleMap.put( language, locale);
 			}
 		}
+		languageToLocaleMap.put( "jap", new Locale("ja_JP"));
+	}
+	
+	public Locale getLocaleForLanguage( String language ) {
+		Locale locale = languageToLocaleMap.get(language.toLowerCase());
+		if (locale != null) {
+			return locale;
+		} else {
+			LOGGER.warn("Unrecognized language : {}", language);
+		}
+		return null;
 	}
 	
 	public MediaInfo getMediaInfo( Path videoFilePath ) throws IOException, InterruptedException {
@@ -89,11 +100,9 @@ public class MediaInfoWrapper {
 			Elements languageElements = audioElement.select("td:has(i:contains(Language)) + td");
 			if (!languageElements.isEmpty()) {
 				String l = languageElements.first().text();
-				Locale locale = languageToLocaleMap.get(l.toLowerCase());
+				Locale locale = getLocaleForLanguage(l);
 				if (locale != null) {
 					mediaInfo.addAudioLanguage(locale);
-				} else {
-					LOGGER.warn("Unrecognized language : " + l, true);
 				}
 			}
 		}
@@ -103,11 +112,9 @@ public class MediaInfoWrapper {
 			Elements languageElements = textElement.select("td:has(i:contains(Language)) + td");
 			if (!languageElements.isEmpty()) {
 				String l = languageElements.first().text();
-				Locale locale = languageToLocaleMap.get(l.toLowerCase());
+				Locale locale = getLocaleForLanguage(l);
 				if (locale != null) {
 					mediaInfo.addSubtitle(locale);
-				} else {
-					LOGGER.warn("Unrecognized language : " + l, true);
 				}
 			}
 		}
