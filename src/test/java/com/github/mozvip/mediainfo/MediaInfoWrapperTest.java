@@ -1,4 +1,4 @@
-package fr.mozvip.mediainfo;
+package com.github.mozvip.mediainfo;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -7,6 +7,9 @@ import java.util.Locale;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.github.mozvip.mediainfo.MediaInfo;
+import com.github.mozvip.mediainfo.MediaInfoWrapper;
 
 public class MediaInfoWrapperTest {
 	

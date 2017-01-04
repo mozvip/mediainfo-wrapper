@@ -1,4 +1,4 @@
-package fr.mozvip.mediainfo;
+package com.github.mozvip.mediainfo;
 
 import java.util.HashSet;
 import java.util.Locale;
