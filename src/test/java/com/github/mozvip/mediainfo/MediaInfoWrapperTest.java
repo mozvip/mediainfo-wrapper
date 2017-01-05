@@ -16,7 +16,7 @@ import com.github.mozvip.mediainfo.MediaInfoWrapper;
 
 public class MediaInfoWrapperTest {
 	
-	private static final String MEDIAINFO_PATH = "/usr/bin/mediainfo";
+	private static final String MEDIAINFO_PATH = "d:/apps/mediainfo/mediainfo.exe";
 	
 	static MediaInfoWrapper wrapper;
 	

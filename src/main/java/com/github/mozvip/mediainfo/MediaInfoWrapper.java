@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
+import java.util.regex.MatchResult;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -90,11 +92,24 @@ public class MediaInfoWrapper {
 		MediaInfo mediaInfo = new MediaInfo();
 		
 		Elements generalTables = html.select("table:has(h2:contains(General))");
-		Element general = generalTables != null ? generalTables.first() : null;
+		Element generalTable = generalTables != null ? generalTables.first() : null;
+		if ( generalTable != null ) {
+			String durationStr = generalTable.select("td:has(i:contains(Duration)) + td").first().text();
+			
+			
+			
+		}
 		
 		Elements videoTables = html.select("table:has(h2:contains(Video))");
-		Element video = videoTables != null ? videoTables.first() : null;
-		
+		Element videoTable = videoTables != null ? videoTables.first() : null;
+		if (videoTable != null) {
+			String width = videoTable.select("td:has(i:contains(Width)) + td").first().text();
+			String height = videoTable.select("td:has(i:contains(Height)) + td").first().text();
+			
+			mediaInfo.setWidth( extractDimension(width) );
+			mediaInfo.setHeight( extractDimension(height) );
+		}
+				
 		Elements audioElements = html.select("table:has(h2:contains(Audio))");
 		for (Element audioElement : audioElements) {
 			Elements languageElements = audioElement.select("td:has(i:contains(Language)) + td");
@@ -120,6 +135,16 @@ public class MediaInfoWrapper {
 		}
 
 		return mediaInfo;
+	}
+
+	private int extractDimension(String str) {
+		Scanner scanner = new Scanner( str );
+		scanner.findInLine("([\\d\\s]+) pixels");
+		MatchResult result = scanner.match();
+		
+		String intValue = result.group(1).replaceAll("\\D", "");
+		
+		return Integer.parseInt( intValue );
 	}	
 
 }
