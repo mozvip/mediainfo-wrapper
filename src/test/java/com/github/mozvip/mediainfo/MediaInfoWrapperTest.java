@@ -1,6 +1,9 @@
 package com.github.mozvip.mediainfo;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 
@@ -23,13 +26,14 @@ public class MediaInfoWrapperTest {
 	}
 
 	@Test
-	public void test() throws IOException, InterruptedException {
-		MediaInfo mediaInfo = wrapper.getMediaInfo(Paths.get("\\\\DLINK-4T\\Volume_1\\movies\\28 Days Later... 2002 1080p DTS multisub HighCode.mkv"));
+	public void test() throws IOException, InterruptedException, URISyntaxException {
 		
-		for (Locale locale : mediaInfo.getSubtitles()) {
-			System.out.println( locale );
-		}
+		URL resource = getClass().getClassLoader().getResource("SampleVideo_1280x720_1mb.mkv");
 		
+		Path videoFilePath = Paths.get(resource.toURI());
+		MediaInfo mediaInfo = wrapper.getMediaInfo(videoFilePath);
+		
+		Assert.assertEquals(1280, mediaInfo.getWidth());
 	}
 	
 	@Test
