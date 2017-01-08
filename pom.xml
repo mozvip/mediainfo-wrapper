@@ -4,6 +4,12 @@
 	<groupId>com.github.mozvip</groupId>
 	<artifactId>mediainfo-wrapper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>mediainfo-wrapper</name>
+	<url>https://github.com/mozvip/mediainfo-wrapper</url>
+	<scm>
+		<url>https://github.com/mozvip/mediainfo-wrapper.git</url>
+		<developerConnection>Guillaume Serre - guillaume.serre@gmail.com</developerConnection>
+	</scm>
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh</id>
@@ -13,7 +19,22 @@
 			<id>ossrh</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-	</distributionManagement>	
+	</distributionManagement>
+	<developers>
+		<developer>
+			<id>mozvip</id>
+			<name>Guillaume Serre</name>
+			<email>guillaume.serre@gmail.com</email>
+			<url>https://github.com/mozvip</url>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>Apache-2.0</name>
+			<url>https://opensource.org/licenses/Apache-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 	<build>
 		<plugins>
 			<plugin>
@@ -34,6 +55,20 @@
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
