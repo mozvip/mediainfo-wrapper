@@ -60,6 +60,7 @@ public class MediaInfoWrapper {
 			}
 		}
 		languageToLocaleMap.put( "jap", new Locale("ja_JP"));
+		languageToLocaleMap.put( "frf", new Locale("fr_FR"));
 	}
 	
 	public Locale getLocaleForLanguage( String language ) {
