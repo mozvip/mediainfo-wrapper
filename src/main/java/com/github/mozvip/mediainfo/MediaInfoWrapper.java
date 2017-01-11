@@ -95,7 +95,10 @@ public class MediaInfoWrapper {
 		Elements generalTables = html.select("table:has(h2:contains(General))");
 		Element generalTable = generalTables != null ? generalTables.first() : null;
 		if ( generalTable != null ) {
-			String durationStr = generalTable.select("td:has(i:contains(Duration)) + td").first().text();
+			Elements durations = generalTable.select("td:has(i:contains(Duration)) + td");
+			if (durations != null && durations.size() > 0) {
+				String durationStr = durations.first().text();
+			}
 			
 			
 			
