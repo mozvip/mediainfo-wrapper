@@ -1,5 +1,6 @@
 package com.github.mozvip.mediainfo;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -8,7 +9,7 @@ public class MediaInfo {
 
 	private int width;
 	private int height;
-	private float fps;
+	private BigDecimal fps;
 	private int duration;
 	
 	private Set<Locale> audioLanguages = new HashSet<>();
@@ -30,11 +31,11 @@ public class MediaInfo {
 		this.height = height;
 	}
 
-	public float getFps() {
+	public BigDecimal getFps() {
 		return fps;
 	}
 
-	public void setFps(float fps) {
+	public void setFps(BigDecimal fps) {
 		this.fps = fps;
 	}
 
