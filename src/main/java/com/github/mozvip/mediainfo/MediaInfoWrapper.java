@@ -2,6 +2,7 @@ package com.github.mozvip.mediainfo;
 
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -138,7 +139,16 @@ public class MediaInfoWrapper {
 		if (videoTable != null) {
 			String width = videoTable.select("td:has(i:contains(Width)) + td").first().text();
 			String height = videoTable.select("td:has(i:contains(Height)) + td").first().text();
-			
+			Elements frameRateElements = videoTable.select("td:has(i:contains(Frame Rate :)) + td");
+			if (!frameRateElements.isEmpty()) {
+				String frameRate = frameRateElements.first().text();
+				try (Scanner sc = new Scanner( frameRate )) {
+					if (sc.findInLine("([\\d\\.]+)\\s.*") != null) {
+						String frameRateStr = sc.match().group(1);
+						mediaInfo.setFps( new BigDecimal(frameRateStr) );
+					}
+				}
+			}
 			mediaInfo.setWidth( extractDimension(width) );
 			mediaInfo.setHeight( extractDimension(height) );
 		}
@@ -171,13 +181,14 @@ public class MediaInfoWrapper {
 	}
 
 	private int extractDimension(String str) {
-		Scanner scanner = new Scanner( str );
-		scanner.findInLine("([\\d\\s]+) pixels");
-		MatchResult result = scanner.match();
-		
-		String intValue = result.group(1).replaceAll("\\D", "");
-		
-		return Integer.parseInt( intValue );
+		try (Scanner scanner = new Scanner( str )) {
+			scanner.findInLine("([\\d\\s]+) pixels");
+			MatchResult result = scanner.match();
+			
+			String intValue = result.group(1).replaceAll("\\D", "");
+			
+			return Integer.parseInt( intValue );
+		}
 	}	
 
 }
