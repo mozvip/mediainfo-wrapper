@@ -16,12 +16,12 @@ import com.github.mozvip.mediainfo.MediaInfoWrapper;
 
 public class MediaInfoWrapperTest {
 	
-	private static final String MEDIAINFO_PATH = "/usr/bin/mediainfo";
-	
 	static MediaInfoWrapper wrapper;
 	
 	@BeforeClass
 	public static void init() {
+		String MEDIAINFO_PATH = System.getenv("MEDIAINFO_PATH");
+		Assert.assertNotNull(MEDIAINFO_PATH);
 		wrapper = MediaInfoWrapper.Builder().pathToMediaInfo(Paths.get(MEDIAINFO_PATH)).build();
 	}
 

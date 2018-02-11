@@ -5,11 +5,16 @@ import java.lang.ProcessBuilder.Redirect;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -95,13 +100,37 @@ public class MediaInfoWrapper {
 		Elements generalTables = html.select("table:has(h2:contains(General))");
 		Element generalTable = generalTables != null ? generalTables.first() : null;
 		if ( generalTable != null ) {
-			Elements durations = generalTable.select("td:has(i:contains(Duration)) + td");
-			if (durations != null && durations.size() > 0) {
-				String durationStr = durations.first().text();
+			String durationStr = generalTable.select("td:has(i:contains(Duration)) + td").first().text();
+			Matcher matcher = Pattern.compile("(\\d+) (\\w+)").matcher(durationStr);
+
+			Duration d = Duration.ZERO;
+			while (matcher.find()) {
+				Integer value = Integer.parseInt(matcher.group(1));
+				String unitStr = matcher.group(2);
+
+				TemporalUnit unit = null;
+
+				switch (unitStr) {
+					case "h":
+						unit = ChronoUnit.HOURS;
+						break;
+					case "min":
+						unit = ChronoUnit.MINUTES;
+						break;
+					case "s":
+						unit = ChronoUnit.SECONDS;
+						break;
+					case "ms":
+						unit = ChronoUnit.MICROS;
+						break;
+					default:
+						LOGGER.error("Unrecognized pattern in duration : {}", unitStr);
+						break;
+				}
+
+				d.plus(value, unit);
 			}
-			
-			
-			
+			mediaInfo.setDuration(d);
 		}
 		
 		Elements videoTables = html.select("table:has(h2:contains(Video))");
